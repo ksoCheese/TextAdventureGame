@@ -6,22 +6,35 @@ public class Main {
         //system objects
         Scanner scan = new Scanner(System.in);
         Random rand = new Random();
-
-        //game variables
-        String[] enemies = {"Zombie","Skeleton","Alien","Werewolf", "Banshee", "Venemous Spider"};
-        int maxEnemyHealth = 75;
-        int enemyAttackDamage = 25;
-
-        //player variables
-        int health = 100;
-        int attackDamage = 50;
-        int numHealthPotions = 3;
-        int healthPotionHealing = 30;
-        int healthPotionDropChance = 50;  // percentage change for enemy to drop health potion
-
-        boolean running = true;   // will be part of a while loop , game runs until condiiton false
+        setGame gameLevel = new setGame();
 
         System.out.println("Welcome to the Dungeon!");
+        System.out.println("Defeat your enemies and walk out victorious!!!");
+        System.out.println("Select your difficulty level: ");
+        System.out.println(" 1. Regular");
+        System.out.println(" 2. Difficult");
+
+        // difficulty determined
+
+        String userInput = scan.nextLine();
+        gameLevel.setLevel(userInput);
+
+        //player variables
+        int health = gameLevel.getHealth();
+        int attackDamage = gameLevel.getAttackDamage();
+        int numHealthPotions = gameLevel.getNumHealthPotions();
+
+        //game variables
+        int healthPotionDropChance = gameLevel.getHealthPotionDropChance();
+        int healthPotionHealing = gameLevel.getHealthPotionHealing();
+
+        // enemy variables
+        int maxEnemyHealth = gameLevel.getMaxEnemyHealth();
+        int enemyAttackDamage = gameLevel.getEnemyAttackDamage();
+        String[] enemies = {"Zombie","Skeleton","Alien","Werewolf", "Banshee", "Venemous Spider"};
+
+        boolean running = true;   // will be part of a while loop , game runs until condition false
+
 
         GAME: //label "Game" is name of this while loop
         while(running) {
@@ -32,7 +45,7 @@ public class Main {
             System.out.println("\t*** " + enemy + " has appeared!  ***\n");
 
             while(enemyHealth > 0){
-                System.out.println("\tYour HP: "+ health);
+                System.out.println("\tYour HP: "+ health+ "  potions("+numHealthPotions+")");
                 System.out.println("\t" + enemy + "'s HP: " + enemyHealth);
                 System.out.println("\n\tWhat would you like to do?");
                 System.out.println("\t1. Attack");
