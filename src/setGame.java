@@ -8,6 +8,8 @@ public class setGame {
     private int healthPotionHealing;
     private int healthPotionDropChance;
 
+    private int victoryCount;
+
 
     public void setLevel(String levelInput){
 
@@ -19,6 +21,7 @@ public class setGame {
             healthPotionHealing = 30;
             maxEnemyHealth = 75;
             enemyAttackDamage = 25;
+            victoryCount = 7;
         }
 
         else if(levelInput.equals("2")) {
@@ -29,6 +32,7 @@ public class setGame {
             healthPotionHealing = 24;
             maxEnemyHealth = 85;
             enemyAttackDamage = 35;
+            victoryCount = 15;
         }
         else
             System.out.println("Invalid Command");
@@ -59,4 +63,11 @@ public class setGame {
         return healthPotionDropChance;
     }
 
+    public int getVictoryCount()  { return victoryCount; }
+
+//    public boolean youWin( int count) {
+//        if (count == victory) {
+//            return true;
+//        }
+//    }
 }
