@@ -8,6 +8,7 @@ public class Main {
         Random rand = new Random();
         setGame gameLevel = new setGame();
         Enemy enemyList = new Enemy();
+        fairyTale fairy = new fairyTale();
 
         System.out.println("Welcome to the Dungeon!");
         System.out.println("Defeat your enemies and walk out victorious!!!");
@@ -25,9 +26,14 @@ public class Main {
         int attackDamage = gameLevel.getAttackDamage();
         int numHealthPotions = gameLevel.getNumHealthPotions();
 
+
         //game variables
         int healthPotionDropChance = gameLevel.getHealthPotionDropChance();
         int healthPotionHealing = gameLevel.getHealthPotionHealing();
+        int fairyEncounter = gameLevel.getFairyEncounter();
+        boolean luckyDuck = fairy.getLuckyDuck();
+        boolean undeadPotion = fairy.getUndeadPotion();
+
         int victory = gameLevel.getVictoryCount();
 
         // enemy variables
@@ -41,6 +47,16 @@ public class Main {
         GAME: //label "Game" is name of this while loop
         while(running) {
             System.out.println("---------------------------------------------------------");
+
+            if (luckyDuck) {
+
+                enemyAttackDamage = gameLevel.useLuckyDuck(); //calls method to use duck , enemy attack 0
+                luckyDuck = false;
+            }
+            if (undeadPotion) {
+                health = gameLevel.useUndeadPotion(); // calls method to use potion and restore health
+                undeadPotion = false;
+            }
 
             int enemyHealth = rand.nextInt(maxEnemyHealth);
             String enemy = enemies[rand.nextInt(enemies.length)];
@@ -100,10 +116,10 @@ public class Main {
             counter++; // when breaks out of fighting loop, will add win because option 2 drinks potion and continues
             //fight, option 3 will run and restart game loop. health < 1 ends game. so this increments when won fight
             System.out.println("----------------------------------------------------------");
-            System.out.println(" *** " + enemy + " was defeated! ***");
-            System.out.println(" *** You have " + health + "HP left. ***");
+            System.out.println("\t *** " + enemy + " was defeated! ***");
+            System.out.println("\t *** You have " + health + "HP left. ***");
 
-            if (counter == victory){
+            if (counter == victory){    // set number of enemies have been defeated, game is won.
                 System.out.println("\n *** VICTORY! YOU'VE DEFEATED THE FINAL ENEMY ***");
                 System.out.println("\n\tYou've defeated " + counter + " enemies!");
                 System.out.println("\n ***You pick up the treasure and hold it victoriously! ***");
@@ -111,11 +127,43 @@ public class Main {
 
             }
 
-            if(rand.nextInt(100) < healthPotionDropChance) {
+            if(rand.nextInt(100) < healthPotionDropChance) {  //while in game loop after a fight
                 numHealthPotions++;
-                System.out.println("\t *** The " + enemy + " dropped a health potion! ***");
-                System.out.println(" *** You now have " + numHealthPotions + " health potion(s). ***");
+                System.out.println("\n\t *** The " + enemy + " dropped a health potion! ***");
+                System.out.println("\t *** You now have " + numHealthPotions + " health potion(s). ***");
             }
+
+            if(rand.nextInt(100) < fairyEncounter) {  // while in game, can meet fairy
+                System.out.println("----------------------------------------------------------");
+                System.out.println("\n\t *** YOU ENCOUNTER A FAIRY!!! ***");
+                System.out.println("\tHello traveler!  Play a game and win a valuable prize!!");
+                System.out.println("\n\tYou must select one of these four pouches...");
+                System.out.println("\tIf you select correctly, you will win whatever is inside!");
+                System.out.println("\n\tPick one: ");
+                System.out.println("\t1. blue pouch");
+                System.out.println("\t2. red pouch");
+                System.out.println("\t3. green pouch");
+                System.out.println("\t4. black pouch");
+
+                String selection = scan.nextLine();
+                boolean prize = fairy.winPrize(selection);
+                if (prize){  //calls fairyTale method
+                    // if true, you won. Instantiate prize object
+                    System.out.println("*** YOU WON... ");
+                    boolean choice = rand.nextBoolean();
+
+                    if (choice) {
+                        luckyDuck = true;
+                        System.out.println("*** A LUCKY DUCK! Your next enemy will be weak at first!  ***");
+                    }else{
+                        undeadPotion = true;
+                        System.out.println("*** UNDEAD POTION! Restores all health next fight!  ***");
+                    }
+                }else
+                    System.out.println("\t Sorry, you selected wrong, must be your unlucky day!");
+
+            }
+
             System.out.println("---------------------------------------------------------");
             System.out.println("What would you like to do now? ");
             System.out.println("1. Continue fighting");

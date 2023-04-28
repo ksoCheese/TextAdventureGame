@@ -8,6 +8,8 @@ public class setGame {
     private int healthPotionHealing;
     private int healthPotionDropChance;
 
+    private int fairyEncounterChance;
+
     private int victoryCount;
 
 
@@ -22,6 +24,7 @@ public class setGame {
             maxEnemyHealth = 75;
             enemyAttackDamage = 25;
             victoryCount = 7;
+            fairyEncounterChance = 45;
         }
 
         else if(levelInput.equals("2")) {
@@ -33,11 +36,19 @@ public class setGame {
             maxEnemyHealth = 85;
             enemyAttackDamage = 35;
             victoryCount = 15;
+            fairyEncounterChance = 35;
         }
         else
             System.out.println("Invalid Command");
     }
 
+    public int useUndeadPotion(){
+        return health = 100;
+    }
+
+    public int useLuckyDuck(){
+        return enemyAttackDamage = 0;
+    }
     public int getHealth() {
         return health;
     }
@@ -62,6 +73,8 @@ public class setGame {
     public int getHealthPotionDropChance() {
         return healthPotionDropChance;
     }
+
+    public int getFairyEncounter()  { return fairyEncounterChance; }
 
     public int getVictoryCount()  { return victoryCount; }
 
