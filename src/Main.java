@@ -3,20 +3,15 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        //system objects
+        //class objects
         Scanner scan = new Scanner(System.in);
         Random rand = new Random();
         setGame gameLevel = new setGame();
         Enemy enemyList = new Enemy();
         fairyTale fairy = new fairyTale();
+        Objects object = new Objects();
 
-        System.out.println("---------------------------------------------------------");
-        System.out.println("\n\tWelcome to the Dungeon!");
-        System.out.println("\n\tDefeat your enemies and walk out victorious!!!");
-        System.out.println("\n\tIf you defeat all enemies in the dungeon, you can claim your reward!!!");
-        System.out.println("\nSelect your difficulty level: ");
-        System.out.println(" 1. Regular");
-        System.out.println(" 2. Difficult");
+        gameLevel.gameIntro();
 
         // difficulty determined
 
@@ -33,10 +28,10 @@ public class Main {
         int healthPotionDropChance = gameLevel.getHealthPotionDropChance();
         int healthPotionHealing = gameLevel.getHealthPotionHealing();
         int fairyEncounter = gameLevel.getFairyEncounter();
-        boolean luckyDuck = fairy.getLuckyDuck();
-        boolean undeadPotion = fairy.getUndeadPotion();
+        boolean luckyDuck = object.getLuckyDuck();
+        boolean undeadPotion = object.getUndeadPotion();
 
-        int victory = gameLevel.getVictoryCount();
+        int end = gameLevel.getVictoryCount();
 
         // enemy variables
         int maxEnemyHealth = gameLevel.getMaxEnemyHealth();
@@ -128,7 +123,9 @@ public class Main {
             System.out.println("\t *** " + enemy + " was defeated! ***");
             System.out.println("\t *** You have " + health + "HP left. ***");
 
-            if (counter == victory){    // set number of enemies have been defeated, game is won.
+            if (counter == end){    // engage in final boss fight
+
+
                 System.out.println("\n *** VICTORY! YOU'VE DEFEATED THE FINAL ENEMY ***");
                 System.out.println("\n\tYou've defeated " + counter + " enemies!");
                 System.out.println("\n ***You pick up the treasure and hold it victoriously! ***");
@@ -143,20 +140,11 @@ public class Main {
             }
 
             if(rand.nextInt(100) < fairyEncounter) {  // while in game, can meet fairy
-                System.out.println("----------------------------------------------------------");
-                System.out.println("\n\t *** YOU ENCOUNTER A FAIRY!!! ***");
-                System.out.println("\tHello traveler!  Play a game and win a valuable prize!!");
-                System.out.println("\n\tYou must select one of these four pouches...");
-                System.out.println("\tIf you select correctly, you will win whatever is inside!");
-                System.out.println("\n\tPick one: ");
-                System.out.println("\t1. blue pouch");
-                System.out.println("\t2. red pouch");
-                System.out.println("\t3. green pouch");
-                System.out.println("\t4. black pouch");
 
+                fairy.meetFairy();
                 String selection = scan.nextLine();
-                boolean prize = fairy.winPrize(selection);
-                if (prize){  //calls fairyTale method
+                boolean prize = fairy.winPrize(selection); //calls fairyTale method
+                if (prize){
                     // if true, you won. Instantiate prize object
                     System.out.println("*** YOU WON... ");
                     boolean choice = rand.nextBoolean();
