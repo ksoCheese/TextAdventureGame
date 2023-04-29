@@ -10,9 +10,11 @@ public class Main {
         Enemy enemyList = new Enemy();
         fairyTale fairy = new fairyTale();
 
-        System.out.println("Welcome to the Dungeon!");
-        System.out.println("Defeat your enemies and walk out victorious!!!");
-        System.out.println("Select your difficulty level: ");
+        System.out.println("---------------------------------------------------------");
+        System.out.println("\n\tWelcome to the Dungeon!");
+        System.out.println("\n\tDefeat your enemies and walk out victorious!!!");
+        System.out.println("\n\tIf you defeat all enemies in the dungeon, you can claim your reward!!!");
+        System.out.println("\nSelect your difficulty level: ");
         System.out.println(" 1. Regular");
         System.out.println(" 2. Difficult");
 
