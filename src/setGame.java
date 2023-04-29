@@ -46,9 +46,7 @@ public class setGame {
         return health = 100;
     }
 
-    public int useLuckyDuck(){
-        return enemyAttackDamage = 0;
-    }
+
     public int getHealth() {
         return health;
     }
@@ -78,9 +76,5 @@ public class setGame {
 
     public int getVictoryCount()  { return victoryCount; }
 
-//    public boolean youWin( int count) {
-//        if (count == victory) {
-//            return true;
-//        }
-//    }
+
 }

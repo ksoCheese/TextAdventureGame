@@ -48,11 +48,11 @@ public class Main {
         while(running) {
             System.out.println("---------------------------------------------------------");
 
-            if (luckyDuck) {
-
-                enemyAttackDamage = gameLevel.useLuckyDuck(); //calls method to use duck , enemy attack 0
-                luckyDuck = false;
-            }
+//            if (luckyDuck) {
+//
+//                enemyAttackDamage = gameLevel.useLuckyDuck(); //calls method to use duck , enemy attack 0
+//                luckyDuck = false;
+            //}
             if (undeadPotion) {
                 health = gameLevel.useUndeadPotion(); // calls method to use potion and restore health
                 undeadPotion = false;
@@ -76,8 +76,15 @@ public class Main {
                     int damageDealt = rand.nextInt(attackDamage);
                     int damageTaken = rand.nextInt(enemyAttackDamage);
 
+                    if (luckyDuck){
+                        System.out.println("\t> You dodge "+ enemy+ "'s strike!");
+                        damageTaken = 0;
+                        luckyDuck = false;
+                    }
                     enemyHealth -= damageDealt;
                     health -= damageTaken;
+
+
 
                     System.out.println("\t> You strike the " + enemy + " for " + damageDealt + " damage.");
                     System.out.println("\t> You received " + damageTaken + " in retaliation!");
@@ -104,7 +111,7 @@ public class Main {
                     continue GAME;
                 }
                 else{
-                    System.out.println("\tInvalid command");
+                    System.out.println("\t  !!! Invalid command!!! ");
                 }
             }
 
