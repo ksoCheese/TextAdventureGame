@@ -3,7 +3,7 @@ public class Objects {
     private boolean luckyDuck;
     private boolean undeadPotion;
 
-    public fairyTale() {
+    public Objects() {
         luckyDuck = false;
         undeadPotion = false;
     }
