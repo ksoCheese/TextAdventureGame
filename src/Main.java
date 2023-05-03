@@ -19,10 +19,8 @@ public class Main {
         gameLevel.setLevel(userInput);
 
         //player variables
-        int health = gameLevel.getHealth();
-        int attackDamage = gameLevel.getAttackDamage();
-        int numHealthPotions = gameLevel.getNumHealthPotions();
 
+        var hero = new Hero(100, 50, 3);
 
         //game variables
         int healthPotionDropChance = gameLevel.getHealthPotionDropChance();
@@ -30,13 +28,15 @@ public class Main {
         int fairyEncounter = gameLevel.getFairyEncounter();
         boolean luckyDuck = object.getLuckyDuck();
         boolean undeadPotion = object.getUndeadPotion();
+        boolean maxHealthPotion = object.getMaxHealthPotion();
 
         int end = gameLevel.getVictoryCount();
 
         // enemy variables
         int maxEnemyHealth = gameLevel.getMaxEnemyHealth();
         int enemyAttackDamage = gameLevel.getEnemyAttackDamage();
-        String[] enemies = enemyList.enemies;
+        //String[] enemies = enemyList.enemies;
+        //String[] bosses = enemyList.bosses;
 
         boolean running = true;   // will be part of a while loop , game runs until condition false
         int counter = 0;  // keep track of victories
@@ -50,18 +50,18 @@ public class Main {
 //                enemyAttackDamage = gameLevel.useLuckyDuck(); //calls method to use duck , enemy attack 0
 //                luckyDuck = false;
             //}
-            if (undeadPotion) {
-                health = gameLevel.useUndeadPotion(); // calls method to use potion and restore health
+            if (maxHealthPotion) {
+                hero.setHealth(gameLevel.useMaxHealthPotion());
                 undeadPotion = false;
             }
 
             int enemyHealth = rand.nextInt(maxEnemyHealth);
-            String enemy = enemies[rand.nextInt(enemies.length)];
+            String enemy = enemyList.getEnemy();
             System.out.println("\t*** " + enemy + " has appeared!  ***\n");
 
             /// nested while loop continues while fighting
             while(enemyHealth > 0){
-                System.out.println("\tYour HP: "+ health+ "  potions("+numHealthPotions+")");
+                System.out.println("\tYour HP: "+ hero.getHealth()+ "  potions("+hero.getNumHealthPotions()+")");
                 System.out.println("\t" + enemy + "'s HP: " + enemyHealth);
                 System.out.println("\n\tWhat would you like to do?");
                 System.out.println("\t1. Attack");
@@ -70,7 +70,7 @@ public class Main {
 
                 String input = scan.nextLine();
                 if(input.equals("1"))   {
-                    int damageDealt = rand.nextInt(attackDamage);
+                    int damageDealt = rand.nextInt(hero.getAttackDamage());
                     int damageTaken = rand.nextInt(enemyAttackDamage);
 
                     if (luckyDuck){
@@ -79,29 +79,21 @@ public class Main {
                         luckyDuck = false;
                     }
                     enemyHealth -= damageDealt;
-                    health -= damageTaken;
 
+                    hero.takeDamage(damageTaken);
 
 
                     System.out.println("\t> You strike the " + enemy + " for " + damageDealt + " damage.");
                     System.out.println("\t> You received " + damageTaken + " in retaliation!");
 
-                    if(health < 1){  // break out of loop if health gone
-                        System.out.println("\t> You are too weak to fight :( ");
+                    if(hero.getHealth() < 1){  // break out of loop if health gone
+                        System.out.println("\n> You are too weak to fight :( ");
                         break;
                     }
                 }
                 else if(input.equals("2"))   {  // stays in fight loop
-                    if(numHealthPotions > 0){
-                        health += healthPotionHealing;
-                        numHealthPotions--;
-                        System.out.println("\t You drink the health potion, healing yourself for " + healthPotionHealing +"."
-                                + "\n\t> You now have " + health + "HP."
-                                + "\n\t> You have " + numHealthPotions + " health potions left.\n");
-                    }
-                    else{
-                        System.out.println("\t> You have no health potions left! Defeat enemies for a chance to get one!");
-                    }
+                        hero.usePotion(healthPotionHealing);
+
                 }
                 else if(input.equals("3"))   {  // breaks out of fight loop and continues outer game loop
                     System.out.println("\t> You run away from the " + enemy + "!");
@@ -112,31 +104,38 @@ public class Main {
                 }
             }
 
-            if (health < 1){ // after breaking out of game loop, will print this then break out of game loop
-                System.out.println("You limp out of the dungeon, weak from battle.");
-                break;
+            if (hero.getHealth() < 1){ // after breaking out of game loop, will print this then break out of game loop
+                if (undeadPotion) {
+                    System.out.println("\n\t  Weak, you drink the UNDEAD POTION....Your energy restored!");
+                    undeadPotion = false;
+                    continue GAME;
+                } else {
+                    System.out.println("\n\t  You limp out of the dungeon, weak from battle.");
+                    break;
+                }
             }
 
             counter++; // when breaks out of fighting loop, will add win because option 2 drinks potion and continues
             //fight, option 3 will run and restart game loop. health < 1 ends game. so this increments when won fight
             System.out.println("----------------------------------------------------------");
             System.out.println("\t *** " + enemy + " was defeated! ***");
-            System.out.println("\t *** You have " + health + "HP left. ***");
+            System.out.println("\t *** You have " + hero.getHealth() + "HP left. ***");
 
             if (counter == end){    // engage in final boss fight
 
 
                 System.out.println("\n *** VICTORY! YOU'VE DEFEATED THE FINAL ENEMY ***");
                 System.out.println("\n\tYou've defeated " + counter + " enemies!");
-                System.out.println("\n ***You pick up the treasure and hold it victoriously! ***");
+                System.out.println("\n *** You pick up the treasure and hold it victoriously! ***");
                 break;
 
             }
 
             if(rand.nextInt(100) < healthPotionDropChance) {  //while in game loop after a fight
-                numHealthPotions++;
+                hero.addHealthPotion();
+
                 System.out.println("\n\t *** The " + enemy + " dropped a health potion! ***");
-                System.out.println("\t *** You now have " + numHealthPotions + " health potion(s). ***");
+                System.out.println("\t *** You now have " + hero.getNumHealthPotions() + " health potion(s). ***");
             }
 
             if(rand.nextInt(100) < fairyEncounter) {  // while in game, can meet fairy
@@ -152,10 +151,16 @@ public class Main {
                     if (choice) {
                         luckyDuck = true;
                         System.out.println("*** A LUCKY DUCK! Your next enemy will be weak at first!  ***");
+
                     }else{
-                        undeadPotion = true;
-                        System.out.println("*** UNDEAD POTION! Restores all health next fight!  ***");
+                        maxHealthPotion = true;
+                        System.out.println("*** MAX HEALTH POTION!  Restores all health next fight! ***");
                     }
+//                    else {
+//                        undeadPotion = true;
+//                        System.out.println("*** UNDEAD POTION! Brings you back from near death!  ***");
+//                    }
+
                 }else
                     System.out.println("\t Sorry, you selected wrong, must be your unlucky day!");
 

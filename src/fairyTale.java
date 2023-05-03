@@ -17,16 +17,14 @@ public class fairyTale {
 
     public boolean winPrize(String selection) {
 
-        boolean win = false;
+        //boolean win = false;
         Random rand = new Random();
         int compChoice = rand.nextInt(4)+1;// selects a random number between 1 and 4
         int number = Integer.parseInt(selection);
 
-        if (number == compChoice) {
-            win = true;
-        }
+        return  (number == compChoice);
 
-        return win;
+
     }
 
 }

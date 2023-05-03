@@ -33,7 +33,7 @@ public class setGame {
             healthPotionHealing = 30;
             maxEnemyHealth = 75;
             enemyAttackDamage = 25;
-            victoryCount = 7;
+            victoryCount = 8;
             fairyEncounterChance = 45;
         }
 
@@ -52,10 +52,11 @@ public class setGame {
             System.out.println("Invalid Command");
     }
 
-    public int useUndeadPotion(){
+    public int useMaxHealthPotion(){
         return health = 100;
     }
 
+    public int useUndeadPotion() { return health = 60; }
 
     public int getHealth() {
         return health;
