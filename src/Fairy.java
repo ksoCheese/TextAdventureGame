@@ -1,7 +1,27 @@
 import java.util.Random;
-public class fairyTale {
+public class Fairy {
 
+    private int fairyEncounterChance;
+    private boolean luckyDuck;
+    private boolean undeadPotion;
+    private boolean maxHealthPotion;
 
+    public Fairy(int fairyEncounterChance) {
+        this.fairyEncounterChance = fairyEncounterChance;
+        luckyDuck = false;
+        undeadPotion = false;
+        maxHealthPotion = false;
+    }
+
+    public boolean getLuckyDuck() {
+        return luckyDuck;
+    }
+
+    public boolean getUndeadPotion() {
+        return undeadPotion;
+    }
+
+    public boolean getMaxHealthPotion() { return maxHealthPotion;}
     public void meetFairy() {
         System.out.println("----------------------------------------------------------");
         System.out.println("\n\t *** YOU ENCOUNTER A FAIRY!!! ***");

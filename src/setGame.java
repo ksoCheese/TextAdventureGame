@@ -1,5 +1,9 @@
 public class setGame {
 
+    //////       GAME INTRO HERE???????  WIN GAME MESSAGE HERE?
+    //////       Can I create a  class with Static methods just to access the intro and victory method? or should i just do it in main?
+
+    /// all below variables are assigned to other classes
     private int health;
     private int attackDamage;
     private int numHealthPotions;
@@ -84,6 +88,7 @@ public class setGame {
     }
 
     public int getFairyEncounter()  { return fairyEncounterChance; }
+
 
     public int getVictoryCount()  { return victoryCount; }
 

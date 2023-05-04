@@ -1,35 +1,37 @@
 
-public class Hero {
-
-    //player variables
-    private int health;
-    private int attackDamage;
+public class Hero extends Character{
 
     private int numHealthPotions = 3;
+    private int healthPotionHealing;
 
-    public Hero (int health, int attackDamage, int numHealthPotions){
-
+    public Hero (int health, int attackDamage, int numHealthPotions, int healthPotionHealing){
         this.health = health;
         this.attackDamage = attackDamage;
         this.numHealthPotions = numHealthPotions;
+        this.healthPotionHealing = healthPotionHealing;
     }
+
+    @Override
     public void setHealth(int value) {
         health = value;
     }
 
+    @Override
     public int getHealth() {
         return health;
     }
-    public int getNumHealthPotions() {
-        return numHealthPotions;
-    }
 
+    @Override
     public int getAttackDamage() {
         return attackDamage;
     }
 
     public void takeDamage(int damageTaken) {
         health -= damageTaken;
+    }
+
+    public int getNumHealthPotions() {
+        return numHealthPotions;
     }
 
     public void usePotion(int healthFromPotion) {
