@@ -6,35 +6,19 @@ public class Main {
         //class objects
         Scanner scan = new Scanner(System.in);
         Random rand = new Random();
-        setGame gameLevel = new setGame();
-        //Enemy enemyList = new Enemy(75, 25);
+        //setGame gameLevel = new setGame();
         Fairy fairy = new Fairy(45);
-        Objects object = new Objects();
-
-        gameLevel.gameIntro();
-
-        // difficulty determined
-
-        String userInput = scan.nextLine();
-        gameLevel.setLevel(userInput);
 
         //player variables
+        var hero = new Hero(100, 100, 50, 3, 30);
 
-        var hero = new Hero(100, 50, 3, 30);
+        setGame.gameIntro();
 
-        //game variables
-        int healthPotionDropChance = gameLevel.getHealthPotionDropChance();
-        int healthPotionHealing = gameLevel.getHealthPotionHealing();
-        int fairyEncounter = gameLevel.getFairyEncounter();
-        boolean luckyDuck = object.getLuckyDuck();
-        boolean undeadPotion = object.getUndeadPotion();
-        boolean maxHealthPotion = object.getMaxHealthPotion();
+        // difficulty determined
+        String selectLevel = scan.nextLine();
+        setGame.setLevel(selectLevel);
 
-        int end = gameLevel.getVictoryCount();
-
-        // enemy variables
-        var enemy = new Enemy(75, 25, 50);
-
+        int end = setGame.getVictoryCount();
 
         boolean running = true;   // will be part of a while loop , game runs until condition false
 
@@ -44,17 +28,12 @@ public class Main {
         while(running) {
             System.out.println("---------------------------------------------------------");
 
-//            if (luckyDuck) {
-//
-//                enemyAttackDamage = gameLevel.useLuckyDuck(); //calls method to use duck , enemy attack 0
-//                luckyDuck = false;
-            //}
-            if (maxHealthPotion) {
-                hero.setHealth(gameLevel.useMaxHealthPotion());
-                maxHealthPotion = false;
+            if (hero.hasMaxHealthPotion()) {
+                hero.useMaxHealthPotion();
             }
 
-            int enemyHealth = enemy.getRandomEnemyHealth(enemy.getHealth());
+            var enemy = new Enemy(75, 25, 50);
+            int enemyHealth = enemy.getHealth();
 
             System.out.println("\t*** " + enemy.getEnemyName() + " has appeared!  ***\n");
 
@@ -72,41 +51,38 @@ public class Main {
                     int damageDealt = rand.nextInt(hero.getAttackDamage());
                     int damageTaken = rand.nextInt(enemy.getAttackDamage());
 
-                    if (luckyDuck){
+                    if (hero.hasLuckyDuck()){
                         System.out.println("\t> You dodge "+ enemy.getEnemyName() + "'s strike!");
                         damageTaken = 0;
-                        luckyDuck = false;
+                        hero.useLuckyDuck();
                     }
-                    enemyHealth -= damageDealt;
+
+                    enemy.takeDamage(damageDealt);
 
                     hero.takeDamage(damageTaken);
 
-
                     System.out.println("\t> You strike the " + enemy.getEnemyName() + " for " + damageDealt + " damage.");
                     System.out.println("\t> You received " + damageTaken + " in retaliation!");
+
+                    enemyHealth = enemy.getHealth();
 
                     if(hero.getHealth() < 1){  // break out of loop if health gone
                         System.out.println("\n> You are too weak to fight :( ");
                         break;
                     }
-                }
-                else if(input.equals("2"))   {  // stays in fight loop
-                        hero.usePotion(healthPotionHealing);
-
-                }
-                else if(input.equals("3"))   {  // breaks out of fight loop and continues outer game loop
+                } else if(input.equals("2"))   {  // stays in fight loop
+                        hero.usePotion(hero.getHealthPotionHealing());
+                } else if(input.equals("3"))   {  // breaks out of fight loop and continues outer game loop
                     System.out.println("\t> You run away from the " + enemy.getEnemyName() + "!");
                     continue GAME;
-                }
-                else{
+                } else{
                     System.out.println("\t  !!! Invalid command!!! ");
                 }
             }
 
             if (hero.getHealth() < 1){ // after breaking out of game loop, will print this then break out of game loop
-                if (undeadPotion) {
-                    System.out.println("\n\t  Weak, you drink the UNDEAD POTION....Your energy restored!");
-                    undeadPotion = false;
+                if (hero.hasUndeadPotion()) {
+                    hero.useUndeadPotion();
                     continue GAME;
                 } else {
                     System.out.println("\n\t  You limp out of the dungeon, weak from battle.");
@@ -122,47 +98,35 @@ public class Main {
 
             if (counter == end){    // engage in final boss fight
 
-
                 System.out.println("\n *** VICTORY! YOU'VE DEFEATED THE FINAL ENEMY ***");
                 System.out.println("\n\tYou've defeated " + counter + " enemies!");
                 System.out.println("\n *** You pick up the treasure and hold it victoriously! ***");
                 break;
-
             }
-
-            if(rand.nextInt(100) < healthPotionDropChance) {  //while in game loop after a fight
+            if(rand.nextInt(100) < enemy.getHealthPotionDropChance()) {  //while in game loop after a fight
                 hero.addHealthPotion();
 
                 System.out.println("\n\t *** The " + enemy.getEnemyName() + " dropped a health potion! ***");
                 System.out.println("\t *** You now have " + hero.getNumHealthPotions() + " health potion(s). ***");
             }
-
-            if(rand.nextInt(100) < fairyEncounter) {  // while in game, can meet fairy
+            if(rand.nextInt(100) < fairy.getFairyEncounterChance()) {  // while in game, can meet fairy
 
                 fairy.meetFairy();
-                String selection = scan.nextLine();
-                boolean prize = fairy.winPrize(selection); //calls fairyTale method
-                if (prize){
-                    // if true, you won. Instantiate prize object
-                    System.out.println("*** YOU WON... ");
-                    boolean choice = rand.nextBoolean();
 
-                    if (choice) {
-                        luckyDuck = true;
-                        System.out.println("*** A LUCKY DUCK! Your next enemy will be weak at first!  ***");
+                if (fairy.winItem(fairy.getSelection())){
+                    System.out.println("\t*** YOU WON... ");
+                    Items itemWon = fairy.giftItem();
+                    System.out.println("\tYou received: " + itemWon.getName());
 
-                    }else{
-                        maxHealthPotion = true;
-                        System.out.println("*** MAX HEALTH POTION!  Restores all health next fight! ***");
+                    if (itemWon instanceof LuckyDuck) {
+                        hero.obtainLuckyDuck((LuckyDuck) itemWon);
+                    } else if (itemWon instanceof maxHealthPotion) {
+                        hero.obtainMaxHealthPotion((maxHealthPotion) itemWon);
+                    } else if (itemWon instanceof UndeadPotion) {
+                        hero.obtainUndeadPotion((UndeadPotion) itemWon);
                     }
-//                    else {
-//                        undeadPotion = true;
-//                        System.out.println("*** UNDEAD POTION! Brings you back from near death!  ***");
-//                    }
-
                 }else
                     System.out.println("\t Sorry, you selected wrong, must be your unlucky day!");
-
             }
 
             System.out.println("---------------------------------------------------------");
@@ -176,11 +140,9 @@ public class Main {
                 System.out.println("Invalid command!");
                 input = scan.nextLine();
             }
-
             if (input.equals ("1")) {
                 System.out.println("You continue on your adventure");
-            }
-            else if(input.equals("2")){
+            } else if(input.equals("2")){
                 System.out.println("You exit the dungeon, tired from your battles. ");
                 System.out.println("You've defeated " + counter + " enemies!");
                 break;

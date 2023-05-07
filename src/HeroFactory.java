@@ -1,4 +1,4 @@
-public class CharacterFactory {
+public class HeroFactory {
 
 
     //handles generating object for hero and enemy based on difficulty user sets

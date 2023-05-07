@@ -2,21 +2,33 @@ import java.util.Random;
 public class Enemy extends Character {
 
     static Random rand = new Random();
+
     private int healthPotionDropChance;
+    private String enemyName;
     public Enemy(int maxEnemyHealth, int enemyAttackDamage, int healthPotionDropChance) {
 
-        health = maxEnemyHealth;
-        attackDamage = enemyAttackDamage;
+        this.health = getRandomEnemyHealth(maxEnemyHealth);
+        this.attackDamage = enemyAttackDamage;
         this.healthPotionDropChance = healthPotionDropChance;
+        this.enemyName = getRandomEnemyName();
     }
 
+    private String getRandomEnemyName() {
+        String[] enemies = {"Zombie", "Skeleton", "Alien", "Werewolf", "Banshee", "Venomous Spider", "Poisonous Toad",
+                "Mummy", "Rabid Wolf", "Vampire", "Flesh-Eating Plant", "Jackal", "Mutant", "Goblin", "Centaur"};
+
+        return enemies[rand.nextInt(enemies.length)];
+    }
+    public String getEnemyName() {
+        return enemyName;
+    }
     public int getRandomEnemyHealth(int maxEnemyHealth) {
         return rand.nextInt(maxEnemyHealth);
     }
 
     @Override
     public void setHealth(int value) {
-
+        health = value;
     }
 
     @Override
@@ -29,15 +41,11 @@ public class Enemy extends Character {
         return attackDamage;
     }
 
-    public String getEnemyName() {
+    public void takeDamage(int damageDealt) { health -= damageDealt; }
 
-        String[] enemies = {"Zombie", "Skeleton", "Alien", "Werewolf", "Banshee", "Venomous Spider", "Poisonous Toad",
-                "Mummy", "Rabid Wolf", "Vampire", "Flesh-Eating Plant", "Jackal", "Mutant", "Goblin", "Centaur"};
-
-        return enemies[rand.nextInt(enemies.length)];
+    public int getHealthPotionDropChance() {
+        return healthPotionDropChance;
     }
-
-
 
     /////////////       CREATE A BOSS CLASS  that extends from character    /////////////
 
