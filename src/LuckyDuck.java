@@ -18,7 +18,7 @@ public class LuckyDuck extends Items {
     public void useItem(Hero hero) {
         setUsed(true);
 
-        System.out.println("You used the Lucky Duck! Your next enemy will be weak at first!");
+        System.out.println("You used the Lucky Duck!");
     }
 
 }

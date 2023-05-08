@@ -4,19 +4,19 @@ public class Main {
     public static void main(String[] args) {
 
         //class objects
-        Scanner scan = new Scanner(System.in);
-        Random rand = new Random();
-        //setGame gameLevel = new setGame();
-        Fairy fairy = new Fairy(45);
-
-        //player variables
-        var hero = new Hero(100, 100, 50, 3, 30);
+        var scan = new Scanner(System.in);
+        var rand = new Random();
+        var fairy = new Fairy(45);
+        var heroCreater = new HeroFactory();
+        var enemyCreater = new EnemyFactory();
 
         setGame.gameIntro();
 
         // difficulty determined
         String selectLevel = scan.nextLine();
         setGame.setLevel(selectLevel);
+
+        Hero hero = heroCreater.createHero(selectLevel);
 
         int end = setGame.getVictoryCount();
 
@@ -32,15 +32,15 @@ public class Main {
                 hero.useMaxHealthPotion();
             }
 
-            var enemy = new Enemy(75, 25, 50);
-            int enemyHealth = enemy.getHealth();
+            Enemy enemy = enemyCreater.createEnemy(selectLevel);
+
 
             System.out.println("\t*** " + enemy.getEnemyName() + " has appeared!  ***\n");
 
             /// nested while loop continues while fighting
-            while(enemyHealth > 0){
+            while(enemy.getHealth()  > 0){
                 System.out.println("\tYour HP: "+ hero.getHealth()+ "  potions("+hero.getNumHealthPotions()+")");
-                System.out.println("\t" + enemy.getEnemyName() + "'s HP: " + enemyHealth);
+                System.out.println("\t" + enemy.getEnemyName() + "'s HP: " + enemy.getHealth());
                 System.out.println("\n\tWhat would you like to do?");
                 System.out.println("\t1. Attack");
                 System.out.println("\t2. Drink health potion");
@@ -52,9 +52,10 @@ public class Main {
                     int damageTaken = rand.nextInt(enemy.getAttackDamage());
 
                     if (hero.hasLuckyDuck()){
+                        hero.useLuckyDuck();
                         System.out.println("\t> You dodge "+ enemy.getEnemyName() + "'s strike!");
                         damageTaken = 0;
-                        hero.useLuckyDuck();
+
                     }
 
                     enemy.takeDamage(damageDealt);
@@ -64,7 +65,6 @@ public class Main {
                     System.out.println("\t> You strike the " + enemy.getEnemyName() + " for " + damageDealt + " damage.");
                     System.out.println("\t> You received " + damageTaken + " in retaliation!");
 
-                    enemyHealth = enemy.getHealth();
 
                     if(hero.getHealth() < 1){  // break out of loop if health gone
                         System.out.println("\n> You are too weak to fight :( ");
