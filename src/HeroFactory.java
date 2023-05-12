@@ -1,8 +1,8 @@
 public class HeroFactory {
 
-        public Hero createHero(String userInput) {
+        public Hero createHero(String levelInput) {
 
-            int level = Integer.parseInt(userInput);
+            int level = Integer.parseInt(levelInput);
             switch (level) {
                 case 1 -> {
                     return new Hero(100, 100, 50, 3, 35);

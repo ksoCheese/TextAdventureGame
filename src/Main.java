@@ -10,15 +10,14 @@ public class Main {
         var heroCreater = new HeroFactory();
         var enemyCreater = new EnemyFactory();
 
-        setGame.gameIntro();
+        GameControl.gameIntro();
 
         // difficulty determined
-        String selectLevel = scan.nextLine();
-        setGame.setLevel(selectLevel);
+        GameControl.setLevel(scan);
 
-        Hero hero = heroCreater.createHero(selectLevel);
+        Hero hero = heroCreater.createHero(GameControl.getLevel());
 
-        int end = setGame.getVictoryCount();
+        int end = GameControl.getVictoryCount();
 
         boolean running = true;   // will be part of a while loop , game runs until condition false
 
@@ -32,12 +31,13 @@ public class Main {
                 hero.useMaxHealthPotion();
             }
 
-            Enemy enemy = enemyCreater.createEnemy(selectLevel);
+            Enemy enemy = enemyCreater.createEnemy(GameControl.getLevel());
 
 
             System.out.println("\t*** " + enemy.getEnemyName() + " has appeared!  ***\n");
 
             /// nested while loop continues while fighting
+            label:
             while(enemy.getHealth()  > 0){
                 System.out.println("\tYour HP: "+ hero.getHealth()+ "  potions("+hero.getNumHealthPotions()+")");
                 System.out.println("\t" + enemy.getEnemyName() + "'s HP: " + enemy.getHealth());
@@ -47,36 +47,32 @@ public class Main {
                 System.out.println("\t3. Run!");
 
                 String input = scan.nextLine();
-                if(input.equals("1"))   {
-                    int damageDealt = rand.nextInt(hero.getAttackDamage());
-                    int damageTaken = rand.nextInt(enemy.getAttackDamage());
+                switch (input) {
+                    case "1" -> {
+                        int damageDealt = rand.nextInt(hero.getAttackDamage());
+                        int damageTaken = rand.nextInt(enemy.getAttackDamage());
+                        if (hero.hasLuckyDuck()) {
+                            hero.useLuckyDuck();
+                            System.out.println("\t> You dodge " + enemy.getEnemyName() + "'s strike!");
+                            damageTaken = 0;
 
-                    if (hero.hasLuckyDuck()){
-                        hero.useLuckyDuck();
-                        System.out.println("\t> You dodge "+ enemy.getEnemyName() + "'s strike!");
-                        damageTaken = 0;
-
+                        }
+                        enemy.takeDamage(damageDealt);
+                        hero.takeDamage(damageTaken);
+                        System.out.println("\t> You strike the " + enemy.getEnemyName() + " for " + damageDealt + " damage.");
+                        System.out.println("\t> You received " + damageTaken + " in retaliation!");
+                        if (hero.getHealth() < 1) {  // break out of loop if health gone
+                            System.out.println("\n> You are too weak to fight :( ");
+                            break label;
+                        }
                     }
-
-                    enemy.takeDamage(damageDealt);
-
-                    hero.takeDamage(damageTaken);
-
-                    System.out.println("\t> You strike the " + enemy.getEnemyName() + " for " + damageDealt + " damage.");
-                    System.out.println("\t> You received " + damageTaken + " in retaliation!");
-
-
-                    if(hero.getHealth() < 1){  // break out of loop if health gone
-                        System.out.println("\n> You are too weak to fight :( ");
-                        break;
+                    case "2" ->   // stays in fight loop
+                            hero.usePotion(hero.getHealthPotionHealing());
+                    case "3" -> {   // breaks out of fight loop and continues outer game loop
+                        System.out.println("\t> You run away from the " + enemy.getEnemyName() + "!");
+                        continue GAME;
                     }
-                } else if(input.equals("2"))   {  // stays in fight loop
-                        hero.usePotion(hero.getHealthPotionHealing());
-                } else if(input.equals("3"))   {  // breaks out of fight loop and continues outer game loop
-                    System.out.println("\t> You run away from the " + enemy.getEnemyName() + "!");
-                    continue GAME;
-                } else{
-                    System.out.println("\t  !!! Invalid command!!! ");
+                    default -> System.out.println("\t  !!! Invalid command!!! ");
                 }
             }
 
