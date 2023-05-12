@@ -3,7 +3,6 @@ import java.util.Scanner;
 public class Fairy {
 
     Random rand = new Random();
-    Scanner scan = new Scanner(System.in);
     private int fairyEncounterChance;
     private String selection;
     public int getFairyEncounterChance() {
@@ -16,7 +15,7 @@ public class Fairy {
 
     public String getSelection() { return selection; }
 
-    public String meetFairy() {
+    public String meetFairy(Scanner scan) {
         System.out.println("----------------------------------------------------------");
         System.out.println("\n\t *** YOU ENCOUNTER A FAIRY!!! ***");
         System.out.println("\tHello traveler!  Play a game and win a valuable prize!!");
@@ -32,7 +31,7 @@ public class Fairy {
 
     }
 
-    public boolean winItem(String selection) {
+    public boolean winItem(Scanner scan) {
         int compChoice = rand.nextInt(4) + 1; // selects a random number between 1 and 4
 
         int number;
@@ -54,7 +53,7 @@ public class Fairy {
     }
 
 
-    public Items giftItem() {
+    public Items selectItem() {
         int itemSelected = rand.nextInt(3)+1;
 
         if (itemSelected == 1){
@@ -67,4 +66,19 @@ public class Fairy {
             return new UndeadPotion();
     }
 
+    public void rewardHero(Hero hero) {
+
+        System.out.println("\t*** YOU WON... ");
+        Items itemWon = this.selectItem();
+        System.out.println("\tYou received: " + itemWon.getName());
+
+        if (itemWon instanceof LuckyDuck) {
+            hero.obtainLuckyDuck((LuckyDuck) itemWon);
+        } else if (itemWon instanceof maxHealthPotion) {
+            hero.obtainMaxHealthPotion((maxHealthPotion) itemWon);
+        } else if (itemWon instanceof UndeadPotion) {
+            hero.obtainUndeadPotion((UndeadPotion) itemWon);
+        }
+
+    }
 }

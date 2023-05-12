@@ -7,15 +7,15 @@ public class Main {
         var scan = new Scanner(System.in);
         var rand = new Random();
         var fairy = new Fairy(45);
-        var heroCreater = new HeroFactory();
-        var enemyCreater = new EnemyFactory();
+        var heroCreator = new HeroFactory();
+        var enemyCreator = new EnemyFactory();
 
         GameControl.gameIntro();
 
         // difficulty determined
         GameControl.setLevel(scan);
 
-        Hero hero = heroCreater.createHero(GameControl.getLevel());
+        Hero hero = heroCreator.createHero(GameControl.getLevel());
 
         int end = GameControl.getVictoryCount();
 
@@ -31,7 +31,7 @@ public class Main {
                 hero.useMaxHealthPotion();
             }
 
-            Enemy enemy = enemyCreater.createEnemy(GameControl.getLevel());
+            Enemy enemy = enemyCreator.createEnemy(GameControl.getLevel());
 
 
             System.out.println("\t*** " + enemy.getEnemyName() + " has appeared!  ***\n");
@@ -107,20 +107,11 @@ public class Main {
             }
             if(rand.nextInt(100) < fairy.getFairyEncounterChance()) {  // while in game, can meet fairy
 
-                fairy.meetFairy();
+                fairy.meetFairy(scan);
 
-                if (fairy.winItem(fairy.getSelection())){
-                    System.out.println("\t*** YOU WON... ");
-                    Items itemWon = fairy.giftItem();
-                    System.out.println("\tYou received: " + itemWon.getName());
+                if (fairy.winItem(scan)){
+                    fairy.rewardHero(hero);
 
-                    if (itemWon instanceof LuckyDuck) {
-                        hero.obtainLuckyDuck((LuckyDuck) itemWon);
-                    } else if (itemWon instanceof maxHealthPotion) {
-                        hero.obtainMaxHealthPotion((maxHealthPotion) itemWon);
-                    } else if (itemWon instanceof UndeadPotion) {
-                        hero.obtainUndeadPotion((UndeadPotion) itemWon);
-                    }
                 }else
                     System.out.println("\t Sorry, you selected wrong, must be your unlucky day!");
             }
