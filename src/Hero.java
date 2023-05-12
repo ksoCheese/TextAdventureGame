@@ -1,6 +1,7 @@
 
 public class Hero extends Character{
 
+    private String heroName;
     private int maxHealth;
     private int numHealthPotions = 3;
     private int healthPotionHealing;
@@ -16,6 +17,10 @@ public class Hero extends Character{
         this.healthPotionHealing = healthPotionHealing;
     }
 
+    public void setHeroName(String name) {
+        heroName = name;
+    }
+    public String getHeroName() { return heroName; }
     @Override
     public void setHealth(int value) {
         health = value;
@@ -121,6 +126,8 @@ public class Hero extends Character{
             maxHealthPotion = null;
         }
     }
+
+
     // warrior vs wizard   warrior has more combat,  wizard has more magic
 // difficulty determines health level and number of potions you start with
 

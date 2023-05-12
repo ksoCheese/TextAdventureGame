@@ -32,11 +32,37 @@ public class GameControl {
         }
     }
 
+    public static String getLevel() {
+        return level;
+    }
 
     public static int getVictoryCount()  { return victoryCount; }
 
+    public static void exitGame(Scanner scan, int counter) {
+//        System.out.println("---------------------------------------------------------");
+//        System.out.println("What would you like to do now? ");
+//        System.out.println("1. Continue fighting");
+//        System.out.println("2. Exit dungeon");
+//
+//        String input = scan.nextLine();
+//
+//        while(!input.equals("1") && !input.equals("2")) {
+//            System.out.println("Invalid command!");
+//            input = scan.nextLine();
+//        }
+//        if (input.equals ("1")) {
+//            System.out.println("You continue on your adventure");
+//        } else if(input.equals("2")){
+//            System.out.println("You exit the dungeon, tired from your battles. ");
+//            System.out.println("You've defeated " + counter + " enemies!");
+//            break;
+//        }
+    }
 
-    public static String getLevel() {
-        return level;
+    public static void outro() {
+
+        System.out.println("\n###########################################################");
+        System.out.println("\n THANKS FOR PLAYING!!!");
+        System.out.println("\n###########################################################");
     }
 }

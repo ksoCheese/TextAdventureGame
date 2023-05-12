@@ -7,15 +7,16 @@ public class Main {
         var scan = new Scanner(System.in);
         var rand = new Random();
         var fairy = new Fairy(45);
-        var heroCreator = new HeroFactory();
-        var enemyCreator = new EnemyFactory();
+
+        var gameplay = new Game();
 
         GameControl.gameIntro();
 
         // difficulty determined
         GameControl.setLevel(scan);
 
-        Hero hero = heroCreator.createHero(GameControl.getLevel());
+        // give hero a name
+        gameplay.createHero(scan);
 
         int end = GameControl.getVictoryCount();
 
@@ -23,18 +24,18 @@ public class Main {
 
         int counter = 0;  // keep track of victories
 
+
         GAME: //label "Game" is name of this while loop
         while(running) {
             System.out.println("---------------------------------------------------------");
 
+            Hero hero =gameplay.getHero();
             if (hero.hasMaxHealthPotion()) {
                 hero.useMaxHealthPotion();
             }
 
-            Enemy enemy = enemyCreator.createEnemy(GameControl.getLevel());
-
-
-            System.out.println("\t*** " + enemy.getEnemyName() + " has appeared!  ***\n");
+            gameplay.createEnemy();
+            Enemy enemy = gameplay.getEnemy();
 
             /// nested while loop continues while fighting
             label:
@@ -81,7 +82,7 @@ public class Main {
                     hero.useUndeadPotion();
                     continue GAME;
                 } else {
-                    System.out.println("\n\t  You limp out of the dungeon, weak from battle.");
+                    System.out.println("\n\t" + hero.getHeroName()+" limps out of the dungeon, weak from battle.");
                     break;
                 }
             }
@@ -95,8 +96,8 @@ public class Main {
             if (counter == end){    // engage in final boss fight
 
                 System.out.println("\n *** VICTORY! YOU'VE DEFEATED THE FINAL ENEMY ***");
-                System.out.println("\n\tYou've defeated " + counter + " enemies!");
-                System.out.println("\n *** You pick up the treasure and hold it victoriously! ***");
+                System.out.println("\n\t"+hero.getHeroName()+" defeated" + counter + " enemies!");
+                System.out.println("\n *** "+ hero.getHeroName()+" picks up the treasure and holds it victoriously! ***");
                 break;
             }
             if(rand.nextInt(100) < enemy.getHealthPotionDropChance()) {  //while in game loop after a fight
@@ -116,6 +117,7 @@ public class Main {
                     System.out.println("\t Sorry, you selected wrong, must be your unlucky day!");
             }
 
+            //GameControl.exitGame(scan, counter);
             System.out.println("---------------------------------------------------------");
             System.out.println("What would you like to do now? ");
             System.out.println("1. Continue fighting");
@@ -128,17 +130,16 @@ public class Main {
                 input = scan.nextLine();
             }
             if (input.equals ("1")) {
-                System.out.println("You continue on your adventure");
+                System.out.println(hero.getHeroName()+ " continues on their adventure");
             } else if(input.equals("2")){
-                System.out.println("You exit the dungeon, tired from your battles. ");
+                System.out.println(hero.getHeroName()+ "  exits the dungeon, tired from their battles. ");
                 System.out.println("You've defeated " + counter + " enemies!");
                 break;
             }
         }
 
-        System.out.println("\n###########################################################");
-        System.out.println("\n THANKS FOR PLAYING!!!");
-        System.out.println("\n###########################################################");
+        GameControl.outro();
+
 
     }
 }
