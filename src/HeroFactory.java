@@ -17,5 +17,4 @@ public class HeroFactory {
             return null;
         }
 
-    // handles generating boss object after final victory
 }

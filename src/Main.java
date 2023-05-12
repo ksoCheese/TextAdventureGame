@@ -18,15 +18,11 @@ public class Main {
         // give hero a name
         gameplay.createHero(scan);
 
-        int end = GameControl.getVictoryCount();
-
-        boolean running = true;   // will be part of a while loop , game runs until condition false
 
         int counter = 0;  // keep track of victories
 
-
         GAME: //label "Game" is name of this while loop
-        while(running) {
+        while(GameControl.isRunning()) {
             System.out.println("---------------------------------------------------------");
 
             Hero hero =gameplay.getHero();
@@ -93,7 +89,7 @@ public class Main {
             System.out.println("\t *** " + enemy.getEnemyName() + " was defeated! ***");
             System.out.println("\t *** You have " + hero.getHealth() + "HP left. ***");
 
-            if (counter == end){    // engage in final boss fight
+            if (counter == GameControl.getVictoryCount()){    // engage in final boss fight
 
                 System.out.println("\n *** VICTORY! YOU'VE DEFEATED THE FINAL ENEMY ***");
                 System.out.println("\n\t"+hero.getHeroName()+" defeated" + counter + " enemies!");
@@ -117,25 +113,8 @@ public class Main {
                     System.out.println("\t Sorry, you selected wrong, must be your unlucky day!");
             }
 
-            //GameControl.exitGame(scan, counter);
-            System.out.println("---------------------------------------------------------");
-            System.out.println("What would you like to do now? ");
-            System.out.println("1. Continue fighting");
-            System.out.println("2. Exit dungeon");
+            GameControl.exitGame(scan, counter);
 
-            String input = scan.nextLine();
-
-            while(!input.equals("1") && !input.equals("2")) {
-                System.out.println("Invalid command!");
-                input = scan.nextLine();
-            }
-            if (input.equals ("1")) {
-                System.out.println(hero.getHeroName()+ " continues on their adventure");
-            } else if(input.equals("2")){
-                System.out.println(hero.getHeroName()+ "  exits the dungeon, tired from their battles. ");
-                System.out.println("You've defeated " + counter + " enemies!");
-                break;
-            }
         }
 
         GameControl.outro();
