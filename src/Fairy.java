@@ -3,17 +3,29 @@ import java.util.Scanner;
 public class Fairy {
 
     Random rand = new Random();
-    private int fairyEncounterChance;
+    private  int fairyEncounterChance;
     private String selection;
+
+    public void createFairy() {
+
+        int level = Integer.parseInt(GameControl.getLevel());
+        switch (level) {
+            case 1 -> {
+                fairyEncounterChance = 45;
+            }
+            case 2 -> {
+                fairyEncounterChance= 35;
+            }
+            default -> {
+                System.out.println("Please choose 1 or 2: ");
+            }
+        }
+    }
     public int getFairyEncounterChance() {
         return fairyEncounterChance;
     }
 
-    public Fairy(int fairyEncounterChance) {
-        this.fairyEncounterChance = fairyEncounterChance;
-    }
-
-    public String getSelection() { return selection; }
+   // public String getSelection() { return selection; }
 
     public String meetFairy(Scanner scan) {
         System.out.println("----------------------------------------------------------");

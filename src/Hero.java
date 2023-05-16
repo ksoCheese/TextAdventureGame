@@ -1,9 +1,8 @@
 
 public class Hero extends Character{
 
-    private String heroName;
     private int maxHealth;
-    private int numHealthPotions = 3;
+    private int numHealthPotions;
     private int healthPotionHealing;
     private LuckyDuck luckyDuck = null;
     private UndeadPotion undeadPotion = null;
@@ -17,10 +16,16 @@ public class Hero extends Character{
         this.healthPotionHealing = healthPotionHealing;
     }
 
-    public void setHeroName(String name) {
-        heroName = name;
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
-    public String getHeroName() { return heroName; }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
     @Override
     public void setHealth(int value) {
         health = value;
@@ -64,8 +69,10 @@ public class Hero extends Character{
         }
     }
 
-    public void addHealthPotion() {
+    public void addHealthPotion(Enemy enemy) {
         numHealthPotions++;
+        System.out.println("\n\t *** The " + enemy.getName() + " dropped a health potion! ***");
+        System.out.println("\t *** You now have " + getNumHealthPotions() + " health potion(s). ***");
     }
 
     public int getHealthPotionHealing() { return healthPotionHealing; }
@@ -129,7 +136,7 @@ public class Hero extends Character{
 
 
     // warrior vs wizard   warrior has more combat,  wizard has more magic
-// difficulty determines health level and number of potions you start with
+
 
 
 

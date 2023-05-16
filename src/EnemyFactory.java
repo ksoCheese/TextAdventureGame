@@ -16,4 +16,22 @@ public class EnemyFactory {
         }
         return null;
     }
+
+    public Boss createBoss(String levelInput) {
+
+        int level = Integer.parseInt(levelInput);
+        switch (level) {
+            case 1 -> {
+                return new Boss(100, 30);
+            }
+            case 2 -> {
+                return new Boss(120, 40);
+            }
+            default -> {
+                System.out.println("Please choose 1 or 2: ");
+            }
+        }
+        return null;
+    }
+
 }

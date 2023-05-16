@@ -10,9 +10,9 @@ public class UndeadPotion extends Items {
         this.used = used;
     }
 
-    public boolean isUsed() {
-        return used;
-    }
+    //public boolean isUsed() {
+//        return used;
+//    }
 
     @Override
     public void useItem(Hero hero) {
