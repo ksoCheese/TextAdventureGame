@@ -90,7 +90,6 @@ public class Game {
                     hero.usePotion(hero.getHealthPotionHealing());
             case "3" -> {   // breaks out of fight loop and continues outer game loop
                 System.out.println("\t> You run away from the " + enemy.getName() + "!");
-                //continue GAME;
                 return false;
             }
             default -> System.out.println("\t  !!! Invalid command!!! ");
@@ -149,11 +148,9 @@ public class Game {
     public boolean oneMoreChance() {
         if (hero.hasUndeadPotion()) {
             hero.useUndeadPotion();
-            //continue GAME;
             return true;
         } else {
             System.out.println("\n\t" + hero.getName()+" limps out of the dungeon, weak from battle.");
-            //break;
             return false;
         }
     }
@@ -170,5 +167,64 @@ public class Game {
         System.out.println("\n *** " + hero.getName() + " picks up the treasure and holds it victoriously! ***");
     }
 
+    public void initializeGame(Scanner scan) {
+        createHero(scan);
+        createFairy();
+    }
+    public void startRound(Scanner scan) {
+        int victories = 0;
+
+        while (GameControl.isRunning()) {
+
+            Hero hero = getHero();
+            if (hero.hasMaxHealthPotion()) {
+                hero.useMaxHealthPotion();
+            }
+
+            createEnemy();
+            Enemy enemy = getEnemy();
+
+            //Enemy fight loop
+            while (enemy.getHealth() > 0) {
+                engageEnemy();
+                if (!enemyBattle(scan)) {
+                    if (hero.getHealth() < 1) {
+                        if (!oneMoreChance()) {
+                            return;
+                        }
+                    }
+                }
+            }
+
+            victories++;
+            defeatEnemyMsg();
+
+            // Boss fight
+            if (victoryAchieved(victories)) {
+                createBoss();
+                Boss boss = getBoss();
+
+                while (boss.getHealth() > 0) {
+                    engageBoss();
+                    if (!bossFight(scan) || hero.getHealth() < 1) {
+                        return;
+                    }
+                    if (boss.getHealth() < 1) {
+                        victoryMsg(victories);
+                        return;
+                    }
+                }
+            }
+
+            checkForPotionDrop();
+            checkforFairyEncounter(scan);
+
+            GameControl.exitGame(scan, victories);
+        }
+    }
+
+    public boolean victoryAchieved(int victories) {
+        return victories >= GameControl.getVictoryCount();
+    }
 }
 
