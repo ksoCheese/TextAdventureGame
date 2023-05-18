@@ -1,7 +1,7 @@
-public class maxHealthPotion extends Items {
+public class MaxHealthPotion extends Items {
 
     private boolean used;
-    public maxHealthPotion() {
+    public MaxHealthPotion() {
 
         this.name = "Max Health Potion";
         this.used = false;

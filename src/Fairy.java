@@ -72,7 +72,7 @@ public class Fairy {
             return new LuckyDuck();
         }
         else if (itemSelected == 2) {
-            return new maxHealthPotion();
+            return new MaxHealthPotion();
         }
         else
             return new UndeadPotion();
@@ -86,8 +86,8 @@ public class Fairy {
 
         if (itemWon instanceof LuckyDuck) {
             hero.obtainLuckyDuck((LuckyDuck) itemWon);
-        } else if (itemWon instanceof maxHealthPotion) {
-            hero.obtainMaxHealthPotion((maxHealthPotion) itemWon);
+        } else if (itemWon instanceof MaxHealthPotion) {
+            hero.obtainMaxHealthPotion((MaxHealthPotion) itemWon);
         } else if (itemWon instanceof UndeadPotion) {
             hero.obtainUndeadPotion((UndeadPotion) itemWon);
         }

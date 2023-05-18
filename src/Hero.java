@@ -6,7 +6,7 @@ public class Hero extends Character{
     private int healthPotionHealing;
     private LuckyDuck luckyDuck = null;
     private UndeadPotion undeadPotion = null;
-    private maxHealthPotion maxHealthPotion = null;
+    private MaxHealthPotion maxHealthPotion = null;
 
     public Hero (int health, int maxHealth, int attackDamage, int numHealthPotions, int healthPotionHealing){
         this.health = health;
@@ -107,7 +107,7 @@ public class Hero extends Character{
     }
 
     // Obtain a MaxHealthPotion
-    public void obtainMaxHealthPotion(maxHealthPotion item) {
+    public void obtainMaxHealthPotion(MaxHealthPotion item) {
         this.maxHealthPotion = item;
     }
 

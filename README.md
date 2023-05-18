@@ -34,7 +34,7 @@ Upon starting the game, you're prompted to select a difficulty level. The number
 During the game, you have opportunities to win items such as:
 
 - LuckyDuck: Helps you dodge enemy attacks.
-- maxHealthPotion: Increases your maximum health.
+- MaxHealthPotion: Increases your maximum health.
 - UndeadPotion: Revives you if you fall in battle.
 
 Use these items wisely to defeat your enemies and win the game!
